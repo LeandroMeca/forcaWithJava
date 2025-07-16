@@ -37,6 +37,9 @@ public class HangmanGame {
     }
 
 
+    public HangmanGameStatus getHangmanGameStatus() {
+        return hangmanGameStatus;
+    }
 
     public void inputCharacter(final char character){
         if(this.hangmanGameStatus != PENDING){

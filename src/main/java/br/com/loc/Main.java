@@ -1,6 +1,7 @@
 package br.com.loc;
 
 import br.com.loc.hangman.exception.GameIsFinishedException;
+import br.com.loc.hangman.exception.LetterAlreadyInputtedException;
 import br.com.loc.hangman.model.HangmanChar;
 import br.com.loc.hangman.model.HangmanGame;
 
@@ -23,28 +24,41 @@ public class Main {
         System.out.println("Selecione uma das opções:");
 
         var option = -1;
-        while (option != 3){
+        while (true){
             System.out.println("1 - Informar uma letra");
             System.out.println("2 - Verificar status do jogo");
             System.out.println("3 - Sair do jogo");
             option = scanner.nextInt();
-            if((option > 3) || (option < 1)){
-                System.out.println("Opção inválida");
+
+            switch (option) {
+                case 1 -> inputCharacter(hangmanGame);
+                case 2 -> showGameStatus(hangmanGame);
+                case 3 -> System.exit(0);
+                default -> System.out.println("Opção inválida");
             }
-            if(option == 1){
-                System.out.println("Informe uma letra");
-                var character = scanner.next().charAt(0);
-                try{
-                    hangmanGame.inputCharacter(character);
-                }catch (GameIsFinishedException ex){
-                    System.out.println(ex.getMessage());
-                    System.exit(0);
-                }
-            }
+
         }
 
     }
 
+    private static void showGameStatus(HangmanGame hangmanGame) {
+        System.out.println(hangmanGame.getHangmanGameStatus());
+        System.out.println(hangmanGame);
+    }
+
+    private static void inputCharacter(HangmanGame hangmanGame) {
+        System.out.println("Informe uma letra");
+        var character = scanner.next().charAt(0);
+        try{
+            hangmanGame.inputCharacter(character);
+        }catch (LetterAlreadyInputtedException ex){
+            System.out.println(ex.getMessage());
+        }catch (GameIsFinishedException ex){
+            System.out.println(ex.getMessage());
+            System.exit(0);
+        }
+        System.out.println(hangmanGame);
+    }
 
 
 }
